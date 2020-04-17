@@ -1,6 +1,6 @@
 <div>
   <div>
-    {{votes}}
+    {{article.votes}}
   </div>
   <div>
     Points
@@ -8,7 +8,7 @@
 </div>
 
 <div>
-  <a [href]="link">{{title}}</a>
+  <a [href]="article.link">{{article.title}}</a>
   <ul>
     <li>
       <a href (click)="voteUp()">👍</a>
