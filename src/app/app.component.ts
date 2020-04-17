@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-hello-world';
+
+  addArticle(newTitle: HTMLInputElement, newLink: HTMLInputElement): boolean {
+    console.log(`${newTitle.value} + ${newLink.value}`);
+
+    return false;
+  }
 }

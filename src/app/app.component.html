@@ -1,1 +1,17 @@
-hello ng!
+<form action="">
+  <h2>{{title}}</h2>
+  <h3>Add a link</h3>
+
+  <div>
+    <label for="title">Title:</label>
+    <input #newTitle name="title" type="text">
+  </div>
+
+  <div>
+    <label for="link">Link:</label>
+    <input #newLink type="text" name="link">
+  </div>
+
+  <!-- add button -->
+  <button (click)="addArticle(newTitle, newLink)">Submit</button>
+</form>
