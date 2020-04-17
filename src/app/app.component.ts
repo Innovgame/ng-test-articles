@@ -11,15 +11,25 @@ export class AppComponent {
   articles: Article[];
 
   constructor() {
-    this.articles = [1, 2, 3].map(v => (new Article(`ng${v}`, 'http://angular.io', v)));
+    this.articles = [1, 2, 3].map(
+      (v) => new Article(`ng${v}`, 'http://angular.io', v)
+    );
   }
 
   addArticle(newTitle: HTMLInputElement, newLink: HTMLInputElement): boolean {
     console.log(`${newTitle.value} + ${newLink.value}`);
 
     this.articles.push(new Article(newTitle.value, newLink.value, 0));
-    this.articles = [...this.articles];
+    this.articles = this.sortedArticles();
 
     return false;
+  }
+
+  sortedArticles(): Article[] {
+    return this.articles.sort((a, b) => a.votes - b.votes);
+  }
+
+  onVoted(votes: number) {
+    this.articles = this.sortedArticles();
   }
 }
