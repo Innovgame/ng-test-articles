@@ -44,4 +44,5 @@ export class Message {
     this.text = (obj && obj.text) || null;
     this.thread = (obj && obj.thread) || null;
   }
+
 }
