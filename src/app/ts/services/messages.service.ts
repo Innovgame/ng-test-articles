@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, scan, refCount, publishReplay } from 'rxjs/operators';
 import { Message, Thread, User } from '../model';
+
+const initialMessages: Message[] = [];
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +15,23 @@ export class MessagesService {
   // 发出每条新的消息
   newMessages$: Subject<Message> = new Subject<Message>();
 
-  constructor() {}
+  // 维护一个messages数组
+  messages$: Observable<Message[]>;
+
+  // updates 应用于messages流的函数流
+  updates$: Subject<any> = new Subject<any>();
+
+  constructor() {
+    this.messages$ = this.updates$.pipe(
+      scan(
+        (messages: Message[], operation: MessageOperation) =>
+          operation(messages),
+        initialMessages
+      ),
+      publishReplay(1),
+      refCount()
+    );
+  }
 
   addMessage(msg: Message): void {
     this.newMessages$.next(msg);
@@ -28,3 +46,7 @@ export class MessagesService {
     );
   }
 }
+
+type MessageOperation = (messages: Message[]) => Message[];
+
+[].reduce((pre, curr) => pre + curr, 0);
