@@ -77,5 +77,3 @@ export class MessagesService {
 }
 
 type MessageOperation = (messages: Message[]) => Message[];
-
-[].reduce((pre, curr) => pre + curr, 0);
