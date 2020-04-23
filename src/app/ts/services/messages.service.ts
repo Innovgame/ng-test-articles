@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
-import { filter, scan, refCount, publishReplay } from 'rxjs/operators';
+import { filter, scan, refCount, publishReplay, map } from 'rxjs/operators';
 import { Message, Thread, User } from '../model';
 
 const initialMessages: Message[] = [];
@@ -21,6 +21,10 @@ export class MessagesService {
   // updates 应用于messages流的函数流
   updates$: Subject<any> = new Subject<any>();
 
+  // action streams
+  createMsg$: Subject<Message> = new Subject<Message>();
+  markThreadAsRead: Subject<any> = new Subject<any>();
+
   constructor() {
     this.messages$ = this.updates$.pipe(
       scan(
@@ -31,6 +35,31 @@ export class MessagesService {
       publishReplay(1),
       refCount()
     );
+
+    this.createMsg$
+      .pipe(
+        map(function (msg: Message): MessageOperation {
+          return (messages: Message[]) => messages.concat(msg);
+        })
+      )
+      .subscribe(this.updates$);
+
+    this.newMessages$.subscribe(this.createMsg$);
+
+    this.markThreadAsRead
+      .pipe(
+        map((thread: Thread) => {
+          return (messages: Message[]) => {
+            return messages.map((msg) => {
+              if (msg.thread.id === thread.id) {
+                msg.isRead = true;
+              }
+              return msg;
+            });
+          };
+        })
+      )
+      .subscribe(this.updates$);
   }
 
   addMessage(msg: Message): void {
