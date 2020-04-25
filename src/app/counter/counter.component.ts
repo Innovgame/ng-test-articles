@@ -10,6 +10,7 @@ import { incrementAction, decrementAction } from '../counter/action';
         <button (click)="decrement()">-</button>
         counter: {{ counter }}
         <button (click)="increment()">+</button>
+        <button (click)="unscribe()">unscribe</button>
       </p>
     </div>
   `,
@@ -27,10 +28,15 @@ export class CounterComponent {
 
   decrement() {
     this.store.dispatch(decrementAction);
-    this.unscribeRef();
   }
 
   increment() {
     this.store.dispatch(incrementAction);
+  }
+
+  unscribe(): void {
+    if (this.unscribeRef) {
+      this.unscribeRef();
+    }
   }
 }
