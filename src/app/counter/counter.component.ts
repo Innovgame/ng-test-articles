@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { Store, AppStore } from '../ts/model';
+import { incrementAction, decrementAction } from '../counter/action';
 
 @Component({
   selector: 'app-counter',
@@ -14,16 +16,21 @@ import { Component } from '@angular/core';
 })
 export class CounterComponent {
   counter: number;
+  unscribeRef: () => void;
 
-  constructor() {
-    this.counter = 0;
+  constructor(@Inject(AppStore) private store: Store<number>) {
+    this.counter = this.store.getState();
+    this.unscribeRef = this.store.subscribe(() => {
+      this.counter = this.store.getState();
+    });
   }
 
   decrement() {
-    this.counter--;
+    this.store.dispatch(decrementAction);
+    this.unscribeRef();
   }
 
   increment() {
-    this.counter++;
+    this.store.dispatch(incrementAction);
   }
 }

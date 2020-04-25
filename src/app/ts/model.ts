@@ -1,6 +1,8 @@
 // import { v4 as uuid } from 'uuid';
 // const { v4: uuid } = require('uuid');
 
+import { InjectionToken } from '@angular/core';
+
 const uuid = () => {
   const s = [];
   const hexDigits = '0123456789abcdef';
@@ -98,3 +100,5 @@ export class Store<T> {
 export type ListenerCallback = () => void;
 
 export type UnsubscribeCallback = () => void;
+
+export const AppStore = new InjectionToken<string>('App.store');
