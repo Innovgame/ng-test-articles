@@ -60,3 +60,41 @@ export class Message {
     this.thread = (obj && obj.thread) || null;
   }
 }
+
+export interface Action {
+  type: string;
+  payload?: any;
+}
+
+export type Reducer<T> = (state: T, action: Action) => T;
+
+export class Store<T> {
+  private state: T;
+  private listeners: ListenerCallback[] = [];
+
+  constructor(private reducer: Reducer<T>, initialState: T) {
+    this.state = initialState;
+  }
+
+  getState(): T {
+    return this.state;
+  }
+
+  dispatch(action: Action): void {
+    this.state = this.reducer(this.state, action);
+    this.listeners.forEach((listener) => {
+      listener();
+    });
+  }
+
+  subscribe(listener: ListenerCallback): UnsubscribeCallback {
+    this.listeners.push(listener);
+    return () => {
+      this.listeners = this.listeners.filter((l) => l !== listener);
+    };
+  }
+}
+
+export type ListenerCallback = () => void;
+
+export type UnsubscribeCallback = () => void;
