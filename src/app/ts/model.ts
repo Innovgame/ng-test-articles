@@ -102,3 +102,4 @@ export type ListenerCallback = () => void;
 export type UnsubscribeCallback = () => void;
 
 export const AppStore = new InjectionToken<string>('App.store');
+export const AppStore2 = new InjectionToken<string>('App.store2');

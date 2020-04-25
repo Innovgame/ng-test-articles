@@ -21,6 +21,7 @@
     "@angular/router": "~9.1.1",
     "@types/underscore": "^1.9.4",
     "@types/uuid": "^7.0.2",
+    "redux": "^4.0.5",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "underscore": "^1.10.2",
